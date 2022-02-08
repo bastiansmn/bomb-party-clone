@@ -1,0 +1,19 @@
+{
+  "name": "bomb-party-clone",
+  "version": "0.0.1",
+  "description": "Ceci est une copie en âme et conscience du jeu Bomb Party disponible sur le net !",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bastiansmn/bomb-party-clone.git"
+  },
+  "author": "Bastian Somon | Tallet Aurélien",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bastiansmn/bomb-party-clone/issues"
+  },
+  "homepage": "https://github.com/bastiansmn/bomb-party-clone#readme"
+}
