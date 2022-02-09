@@ -4,7 +4,10 @@
   "description": "Ceci est une copie en âme et conscience du jeu Bomb Party disponible sur le net !",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"npm run back\" \"npm run front\"",
+    "front": "cd ./front && npm run dev ",
+    "back": "cd ./back && npm run serve "
   },
   "repository": {
     "type": "git",
