@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/bastiansmn/bomb-party-clone/issues"
   },
-  "homepage": "https://github.com/bastiansmn/bomb-party-clone#readme"
+  "homepage": "https://github.com/bastiansmn/bomb-party-clone#readme",
+  "dependencies": {
+    "concurrently": "^7.0.0"
+  }
 }
