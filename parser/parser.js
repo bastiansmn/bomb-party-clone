@@ -11,7 +11,7 @@ const fs = require("fs");
 // });
 
 let readableStream = fs.createReadStream(process.argv[2], {
-  encoding: "ascii",
+  encoding: "utf-16le",
 });
 let chunk;
 const res = new Set();
@@ -27,14 +27,16 @@ readableStream.on("readable", () => {
           .replaceAll("\\", "")
           .replaceAll(/\00/g, "")
       )
-      .forEach((word) => res.add(word));
+      .forEach((word) =>
+        res.add(word.normalize("NFD").replace(/\p{Diacritic}/gu, ""))
+      );
   }
 });
 
 readableStream.on("end", () => {
   const name = process.argv[3] ?? "output.txt";
   const str = Array.from(res).join("\n");
-  fs.writeFile(name, str, "ascii", (err) => {
+  fs.writeFile(name, str, "utf-16le", (err) => {
     if (err) {
       console.error(err);
       return;
