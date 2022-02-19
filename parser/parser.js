@@ -229,9 +229,9 @@ function sortWordBySyllabes() {
   syllabes.forEach(
     (syl) =>
       (results[syl] = Array.from(res).filter((word) =>
-        word.includes(syl.toLowerCase())
-      ))
-  );
+        word.includes(syl.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase())
+      )).sort((a, b) => a.localeCompare(b))
+  )
   writeJsonDict(results);
 }
 

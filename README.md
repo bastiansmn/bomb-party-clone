@@ -12,6 +12,6 @@ Ceci est une copie en âme et conscience du jeu Bomb Party disponible sur le net
 
 - Back-end :
    * Node.JS
-   * Koa 
+   * On travaille avec Koa ?
    * Socket.io
 

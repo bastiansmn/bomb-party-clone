@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Le Back-End du jeu Bomb-Party utilisant Koa ? ",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "nodemon server.js"
@@ -10,8 +11,9 @@
   "author": "Bastian Somon, Aurélien Tallet",
   "license": "ISC",
   "dependencies": {
-    "koa": "^2.13.4",
-    "nodemon": "^2.0.15",
-    "socket.io": "^4.4.1"
+    "fastify": "^3.27.2",
+    "fastify-static": "^4.5.0",
+    "fastify-websocket": "^4.0.0",
+    "nodemon": "^2.0.15"
   }
 }
