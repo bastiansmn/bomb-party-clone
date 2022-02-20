@@ -5,22 +5,13 @@ import path from "path";
 import { randomUUID } from "crypto";
 
 import { BombParty } from "./model/BombParty.js";
+import { RoomUUID } from "./model/common/RoomUUID.js";
 
-import { 
-  root,
-  createRoom
-} from "./routes/routes.js";
+import { root, createRoom } from "./routes/routes.js";
 
-import {
-  createRoomParameters,
-} from "./routes/schema.js";
-import { Room } from "./model/Room.js";
+import { createRoomParameters } from "./routes/schema.js";
+import { PrivateRoom, Room } from "./model/Room.js";
 
-
-const r1 = new Room('TEST3','PUBLIC' );
-const r2 = new Room('TEST2','PUBLIC' );
-
-const gameInstance = new BombParty();
 
 // Middlewares
 const fastify = Fastify({ logger: false });
@@ -28,6 +19,7 @@ fastify.register(FastifyWS);
 fastify.register(fastifyStatic, {
   root: path.resolve("./public"),
 });
+const gameInstance = new BombParty(fastify);
 
 const PREFIX = "/api/v1";
 
@@ -45,4 +37,3 @@ fastify.post(PREFIX + "/createRoom", createRoomParameters, createRoom);
     process.exit(1);
   }
 })();
-

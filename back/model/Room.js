@@ -1,23 +1,39 @@
-import { randomUUID } from "crypto";
+import { RoomUUID } from "./common/RoomUUID.js";
+import { BombParty } from "./BombParty.js";
+import { RoomType } from "./common/RoomType.js";
 
 export class Room {
-  // TODO : refactor en clé
-  #uuid;
+  #roomID;
   #name;
-  #type;
-
-  constructor(name, type) {
-    this.#uuid = randomUUID();
+  #socket;
+  
+  constructor(name) {
+    this.#roomID = RoomUUID.generate();
     this.#name = name;
-    this.#type = type;
   }
 
-  static exists(uuid) {
-    return BombParty.ROOMS.find((room) => room.getUUID() === uuid);
-  }
+  // METHODS
+
+  // STATIC METHODS
+  static exists = (roomID) => BombParty.ROOMS.find((room) => room.getRoomID() === roomID);
 
   // GETTERS
   getName = () => this.#name;
-  getType = () => this.#type;
-  getUUID = () => this.#uuid;
+  getType = () => RoomType.PUBLIC;
+  getRoomID = () => this.#roomID;
+  getSocket = () => this.#socket;
+}
+
+export class PrivateRoom extends Room {
+  #passwd;
+
+  constructor(name, passwd) {
+    super(name);
+    this.#passwd = passwd;
+  }
+
+  // METHODS
+  matchPasswd = (passwd) => this.#passwd === passwd;
+
+  getType = () => RoomType.PRIVATE;
 }
