@@ -6,7 +6,7 @@
 .pnp.js
 output.txt
 output.json
-file.dic
+*.dic
 # testing
 /coverage
 
