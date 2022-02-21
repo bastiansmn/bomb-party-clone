@@ -15,8 +15,7 @@ export const createRoomParameters = {
         },
         roomPasswd: {
           type: "string",
-          minLength: 6,
-          default: "public"
+          minLength: 5,
         }
       },
     },
@@ -27,6 +26,20 @@ export const createRoomParameters = {
           message: {
             type: "string",
           },
+          room: {
+            type: "object",
+            properties: {
+              roomID: {
+                type: "string",
+              },
+              roomName: {
+                type: "string",
+              },
+              roomType: {
+                type: "string",
+              },
+            }
+          }
         },
       },
       400: {
