@@ -7,7 +7,7 @@ export const createRoomParameters = {
       properties: {
         roomName: {
           type: "string",
-          maxLength: 10,
+          maxLength: 20,
         },
         roomType: {
           type: "string",

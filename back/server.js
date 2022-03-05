@@ -5,20 +5,12 @@ import path from "path";
 
 import { BombParty } from "./model/BombParty.js";
 
-import { 
-  root, 
-  createRoom, 
-} from "./routes/routes.js";
+import { root, createRoom } from "./routes/routes.js";
 
-import {
-  Player
-} from "./model/Player.js";
+import { Player } from "./model/Player.js";
 
-import { 
-  createRoomParameters, 
-} from "./routes/schema.js";
+import { createRoomParameters } from "./routes/schema.js";
 import { PrivateRoom, Room } from "./model/Room.js";
-
 
 // Middlewares
 export const fastify = Fastify({ logger: false });
@@ -28,32 +20,48 @@ fastify.register(fastifyStatic, {
 });
 
 // Routes declaration
-fastify.get("/", root)
+fastify.get("/", root);
 
 fastify.post("/room/createRoom", createRoomParameters, createRoom);
 
 fastify.get("/room/fetch", async (_req, res) => {
   res.send({
-    rooms: BombParty.ROOMS,
-  })
-})
+    rooms: BombParty.ROOMS.map((room) => ({
+      roomID: room.getRoomID(),
+      name: room.getName(),
+      type: room.getType(),
+      players: room.getPlayers().map((player) => ({
+        uuid: player.getUUID(),
+        name: player.getName(),
+        status: player.getStatus(),
+      })),
+    })),
+  });
+});
 
-fastify.get('/room/:roomID', { websocket: true }, async (connection, req) => {
+fastify.get("/room/:roomID", { websocket: true }, async (connection, req) => {
   const { roomID } = req.params;
   let room = BombParty.findRoom(roomID);
   if (!room) {
-    connection.socket.send(JSON.stringify({
-      type: "error",
-      message: "Room not found",
-    }));
-    return;
+    connection.socket.send(
+      JSON.stringify({
+        type: "error",
+        message: "Room not found",
+      })
+    );
+    // connection.addListener("close", () => console.log("close"));
+    // connection.destroy()
+    // throw new Error("nik ta mer");
   }
+
   // TODO : Si pas déjà connecté, créer le joueur et l'ajouter à la room
   room.addPlayer(connection, req.query.username);
-  connection.socket.send(JSON.stringify({
-    type: "message",
-    message: "Connected to room",
-  }));
+  connection.socket.send(
+    JSON.stringify({
+      type: "message",
+      message: "Connected to room",
+    })
+  );
 });
 
 // Start the server

@@ -14,41 +14,33 @@ export class Room {
   constructor(name) {
     this.#roomID = RoomUUID.generate();
     this.#name = name;
-    this.start();
   }
 
-  // METHODS  
+  // METHODS
+  broadcast = payload => this.#players.forEach(p => p.getSocket().send(JSON.stringify(payload)))
 
-  start() {
-    setTimeout(() => {
-      this.#players.forEach(player => {
-        player.getSocket().send(JSON.stringify({
-          message: "Game started",
-        }))
-      });
-    }, 20_000);
-  }
+  getPlayer = (uuid) => this.#players.find(player => player.getUUID() == uuid);
 
-  getPlayer = (uuid) =>
-    this.#players.find((player) => player.getUUID() == uuid);
-  addPlayer = (connection, name) => {
-    const player = new Player(connection, name);
-    this.#players.push(player);
-  };
+  addPlayer = (connection, name) => this.#players.push(new Player(connection, name));
+
+  // TODO
+  joinRoom = (connection, uuid) => this.getPlayer(uuid).setConnection(connection);
+
   removePlayer = (uuid) => (this.#players = this.#players.filter((p) => p.getUUID() !== uuid));
+
   getPlayers = () => this.#players;
+
   getAdminPlayer = () => this.#players[0];
-  
+
+  toString = () => `Room ${this.#roomID}: Name ${this.#name}`;
   // STATIC METHODS
-  static exists = (roomID) =>
-    BombParty.ROOMS.find((room) => room.getRoomID() === roomID);
+  static exists = (roomID) => BombParty.ROOMS.find(room => room.getRoomID() === roomID);
 
   // GETTERS
   getName = () => this.#name;
   getType = () => RoomType.PUBLIC;
   getRoomID = () => this.#roomID;
 
-  toString = () => `Room ${this.#roomID}: Name ${this.#name}`;
 }
 
 // PRIVATE ROOM
@@ -60,7 +52,6 @@ export class PrivateRoom extends Room {
     super(name);
     this.#passwd = passwd;
   }
-
   // METHODS
 
   matchPasswd = (passwd) => this.#passwd === passwd;
